@@ -115,8 +115,23 @@ bool is_isogram(std::string str) {
 
 bool possibly_perfect(const std::vector<char>& key, const std::vector<char>& answers)
 {
-    // your code here
-    return true;
+	bool all_correct = true;
+	bool all_wrong   = true;
+
+	for (size_t i = 0; i < key.size(); ++i) {
+		if (key[i] == '_') {
+			continue;
+		}
+
+		if (key[i] == answers[i]) {
+			all_wrong = false;
+		}
+		else {
+			all_correct = false;
+		}
+	}
+
+	return all_wrong or all_correct;
 }
 
 // ********************************************************************************************************
