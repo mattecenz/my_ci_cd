@@ -57,8 +57,17 @@ std::string balancedNum(unsigned long long int number)
 // "moOse" --> false (ignore letter case)
 
 bool is_isogram(std::string str) {
-  // your code here
-  return false;
+	std::unordered_set<char> acc;
+
+	for (char c : str) {
+		if (acc.count(c) > 0) {
+			return false;
+		}
+
+		acc.insert(c);
+	}
+
+	return true;
 }
 
 // ********************************************************************************************************

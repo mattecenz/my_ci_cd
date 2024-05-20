@@ -7,8 +7,9 @@ TEST(Problem1, BalancedNum) {
 }
 
 TEST(Problem2, IsIsogram) {
-    EXPECT_TRUE(is_isogram("Dermatoglyphics"));
-    EXPECT_FALSE(is_isogram("aba"));
+	EXPECT_TRUE(is_isogram("Dermatoglyphics"));
+	EXPECT_FALSE(is_isogram("aba"));
+	EXPECT_TRUE(is_isogram("moOse"));
 }
 
 TEST(Problem3, PossiblyPerfect) {
