@@ -1,10 +1,23 @@
 #include <gtest/gtest.h>
 #include "../src/problems.h"
 
+/*
+class OurTests : public testing::Test{
+
+	protected:
+
+	TEST_F(OurTests, MyTests){
+		
+	}
+
+}
+*/
+
 TEST(Problem1, BalancedNum) {
     EXPECT_EQ(balancedNum(7), "Balanced");
     EXPECT_EQ(balancedNum(959), "Balanced");
 		EXPECT_EQ(balancedNum(1023), "Not Balanced");
+		EXPECT_EQ(balancedNum(958), "Not Balanced");
 }
 
 TEST(Problem2, IsIsogram) {
@@ -20,6 +33,8 @@ TEST(Problem3, PossiblyPerfect) {
 TEST(Problem4, FindOdd) {
     EXPECT_EQ(findOdd({7}), 7);
     EXPECT_EQ(findOdd({0}), 0);
+		EXPECT_EQ(findOdd({0,1,0,2,2}), 1);
+		EXPECT_EQ(findOdd({1,1,2,2,3,4,3,0,4}), 0);
 }
 
 TEST(Problem5, EncodeDecode) {

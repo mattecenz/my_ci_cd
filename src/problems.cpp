@@ -284,9 +284,94 @@ std::string decode(const std::string &str) {
 // You must return all possible bananas, but the order does not matter
 // The example output above is formatted for readability. Please refer to the example tests for expected format of your result.
 
+#include <iostream>
+
+// Easiest solution: recursive
+// Keep track of the solution set and the position in our array of pointers
+void visit(const std::string& s, std::unordered_set<std::string>& result, std::vector<size_t>& ptrs, size_t curr){
+
+	// If we are not at the last element recursively call the function for each other next subelement
+	if(curr!=ptrs.size()-1){
+
+		// We know how many times we have to call the function
+		for(size_t i=curr;i<s.length()-(ptrs.size()-curr-1);++i){
+			
+			// Call the function on the next element recursively
+			visit(s,result,ptrs,curr+1);
+			
+			//Modify the current pointer (and all the next ones)
+			ptrs[curr]++;
+			for(size_t j=curr+1;j<ptrs.size();++j)
+				ptrs[j]=ptrs[j-1]+1;
+
+		}
+
+	}
+	//Then if we are at the last element we can check it
+	else{
+		// Do a print for the moment
+		// Here i just need to cycle through each rightmost element up until the end of the string
+		for(size_t i=ptrs[ptrs.size()-1];i<s.length();++i){
+			// And perform my banana checking
+			//for(size_t j=0;j<ptrs.size()-1;++j)
+			//	std::cerr<<ptrs[j]<<" ";
+			//std::cerr<<i<<std::endl;
+			// This will contain the string to insert
+			std::string copy;
+			// This will contain the word to check with "banana"
+			std::string copy_truncated;
+			// We can work under the assumption that there are no repetitions
+			size_t idx_ptrs=0;
+			for(size_t j=0;j<s.length();++j){
+				if(j==ptrs[idx_ptrs]){
+					copy+="-";
+					idx_ptrs++;
+				}
+				else{
+					copy_truncated+=s[j];
+					copy+=s[j];
+				}
+			}
+			// Check if the truncated copy is a banana
+			if(copy_truncated=="banana"){
+				result.insert(copy);
+			}
+			// Else do nothing
+		}
+	}
+
+}
+
 std::unordered_set<std::string> bananas(const std::string& s) {
-    // your code here
-    return {};
+    
+	std::string banana="banana";
+
+	if(s.length()<banana.length())
+		return {};
+
+
+	if(s.length()==banana.length())
+		if(s=="banana")
+			return {s};
+		else
+			return {};
+
+	std::unordered_set<std::string> result={};
+
+	for(size_t i=1;i<s.length()-banana.length()+1;++i){
+
+	//Idea: keep one fixed and move the others
+
+	std::vector<size_t> ptrs;
+	for(size_t j=0;j<i;++j)
+		ptrs.emplace_back(j);
+	
+		visit(s,result,ptrs,0);
+
+	}
+	
+	return result;
+
 }
 
 // ********************************************************************************************************
