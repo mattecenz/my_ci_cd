@@ -217,13 +217,31 @@ int findOdd(const std::vector<int> &numbers)
 // For the sake of simplicity, you can assume that any numbers passed into the function will correspond to vowels.
 
 std::string encode(const std::string &str) {
-  // your code here
-  return "";
+	std::string vowels("aeiou");
+	std::string result = str;
+
+	for (size_t i = 0; i < result.size(); ++i) {
+		const size_t pos = vowels.find_first_of(str[i]);
+
+		if (pos != std::string::npos) {
+			result[i] = '1' + pos;
+		}
+	}
+
+	return result;
 }
 
 std::string decode(const std::string &str) {
-  // your code here
-  return "";
+	std::string result = str;
+	std::string vowels("aeiou");
+
+	for (size_t i = 0; i < str.size(); ++i) {
+		if (str[i] > '0' and str[i] < '6') {
+			result[i] = vowels[str[i] - '1'];
+		}
+	}
+
+	return result;
 }
 
 // ********************************************************************************************************
