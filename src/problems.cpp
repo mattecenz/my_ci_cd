@@ -41,8 +41,54 @@
 
 std::string balancedNum(unsigned long long int number)
 {
-  // your code here
-  return "";
+
+	std::vector<unsigned long long int> digits;
+
+	while(number>=10){
+		
+		digits.emplace_back(number%10);
+
+		number=(number-number%10)/10;
+
+	}
+
+	digits.emplace_back(number);
+
+	// Corner case
+	if(digits.size()<3)
+		return "Balanced";
+
+	bool even = digits.size()%2 == 0;
+
+	int sum1=0;
+	int sum2=0;
+
+	if(even){
+		int i1=0;
+		int i2=digits.size()-1;
+
+		while(i2-i1!=1){
+			sum1+=digits[i1++];
+			sum2+=digits[i2--];
+		}
+	}
+	// odd
+	else{
+		int i1=0;
+		int i2=digits.size()-1;
+
+		while(i2-i1!=0){
+			sum1+=digits[i1++];
+			sum2+=digits[i2--];
+		}
+
+	}
+	
+	if(sum1==sum2)
+		return "Balanced";
+
+	else
+  	return "Not Balanced";
 }
 
 // ********************************************************************************************************
