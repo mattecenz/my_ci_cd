@@ -225,8 +225,8 @@ std::string encode(const std::string &str) {
 	for (size_t i = 0; i < result.size(); ++i) {
 		const size_t pos = vowels.find_first_of(str[i]);
 
-		if (pos > 0) {
-			result[pos] = pos + 1;
+		if (pos != std::string::npos) {
+			result[i] = '1' + pos;
 		}
 	}
 
