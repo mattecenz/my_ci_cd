@@ -195,8 +195,10 @@ bool possibly_perfect(const std::vector<char>& key, const std::vector<char>& ans
 
 int findOdd(const std::vector<int> &numbers)
 {
-  // your code here
-  return 1;
+	int number=numbers[0];
+	for(size_t i=1;i<numbers.size();++i)
+		number=number^numbers[i];
+  return number;
 }
 
 // ********************************************************************************************************
@@ -232,10 +234,10 @@ std::string encode(const std::string &str) {
 }
 
 std::string decode(const std::string &str) {
-	std::string result = str;
 	std::string vowels("aeiou");
+	std::string result = str;
 
-	for (size_t i = 0; i < str.size(); ++i) {
+	for (size_t i = 0; i < result.size(); ++i) {
 		if (str[i] > '0' and str[i] < '6') {
 			result[i] = vowels[str[i] - '1'];
 		}
