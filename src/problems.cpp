@@ -195,8 +195,10 @@ bool possibly_perfect(const std::vector<char>& key, const std::vector<char>& ans
 
 int findOdd(const std::vector<int> &numbers)
 {
-  // your code here
-  return 1;
+	int number=numbers[0];
+	for(size_t i=1;i<numbers.size();++i)
+		number=number^numbers[i];
+  return number;
 }
 
 // ********************************************************************************************************
