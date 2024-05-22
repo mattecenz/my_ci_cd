@@ -60,35 +60,24 @@ std::string balancedNum(unsigned long long int number)
 
 	bool even = digits.size()%2 == 0;
 
+	int dist = even ? 1 : 0;
+
 	int sum1=0;
 	int sum2=0;
 
-	if(even){
-		int i1=0;
-		int i2=digits.size()-1;
+	int i1=0;
+	int i2=digits.size()-1;
 
-		while(i2-i1!=1){
-			sum1+=digits[i1++];
-			sum2+=digits[i2--];
-		}
+	while(i2-i1!=dist){
+		sum1+=digits[i1++];
+		sum2+=digits[i2--];
 	}
-	// odd
-	else{
-		int i1=0;
-		int i2=digits.size()-1;
 
-		while(i2-i1!=0){
-			sum1+=digits[i1++];
-			sum2+=digits[i2--];
-		}
-
-	}
-	
 	if(sum1==sum2)
 		return "Balanced";
 
 	else
-  	return "Not Balanced";
+  		return "Not Balanced";
 }
 
 // ********************************************************************************************************
@@ -196,8 +185,10 @@ bool possibly_perfect(const std::vector<char>& key, const std::vector<char>& ans
 int findOdd(const std::vector<int> &numbers)
 {
 	int number=numbers[0];
+	 
 	for(size_t i=1;i<numbers.size();++i)
 		number=number^numbers[i];
+		
   return number;
 }
 
@@ -284,13 +275,13 @@ std::string decode(const std::string &str) {
 // You must return all possible bananas, but the order does not matter
 // The example output above is formatted for readability. Please refer to the example tests for expected format of your result.
 
-#include <iostream>
+//#include <iostream>
 
-// Easiest solution: recursive
+// Easiest solution: recursive <- construct all possible combinations of positions to remove 
 // Keep track of the solution set and the position in our array of pointers
 void visit(const std::string& s, std::unordered_set<std::string>& result, std::vector<size_t>& ptrs, size_t curr){
 
-	// If we are not at the last element recursively call the function for each other next subelement
+	// If we are not at the last element of ptrs recursively call the function on each other next position curr+1
 	if(curr!=ptrs.size()-1){
 
 		// We know how many times we have to call the function
@@ -299,7 +290,7 @@ void visit(const std::string& s, std::unordered_set<std::string>& result, std::v
 			// Call the function on the next element recursively
 			visit(s,result,ptrs,curr+1);
 			
-			//Modify the current pointer (and all the next ones)
+			//Modify the current pointer (and all the next ones <- no repetitions of positions)
 			ptrs[curr]++;
 			for(size_t j=curr+1;j<ptrs.size();++j)
 				ptrs[j]=ptrs[j-1]+1;
@@ -309,19 +300,21 @@ void visit(const std::string& s, std::unordered_set<std::string>& result, std::v
 	}
 	//Then if we are at the last element we can check it
 	else{
-		// Do a print for the moment
-		// Here i just need to cycle through each rightmost element up until the end of the string
+		// Here i just need to cycle through each rightmost pointer up until the end of the string
 		for(size_t i=ptrs[ptrs.size()-1];i<s.length();++i){
-			// And perform my banana checking
+			
 			//for(size_t j=0;j<ptrs.size()-1;++j)
 			//	std::cerr<<ptrs[j]<<" ";
 			//std::cerr<<i<<std::endl;
-			// This will contain the string to insert
+
+			// And perform my banana checking
+			// This will contain the string to insert in the result
 			std::string copy;
 			// This will contain the word to check with "banana"
 			std::string copy_truncated;
 			// We can work under the assumption that there are no repetitions
 			size_t idx_ptrs=0;
+			// Construct the string without the positions in ptrs
 			for(size_t j=0;j<s.length();++j){
 				if(j==ptrs[idx_ptrs]){
 					copy+="-";
@@ -333,9 +326,8 @@ void visit(const std::string& s, std::unordered_set<std::string>& result, std::v
 				}
 			}
 			// Check if the truncated copy is a banana
-			if(copy_truncated=="banana"){
+			if(copy_truncated=="banana")
 				result.insert(copy);
-			}
 			// Else do nothing
 		}
 	}
@@ -346,9 +338,9 @@ std::unordered_set<std::string> bananas(const std::string& s) {
     
 	std::string banana="banana";
 
+	// Corner case checkings
 	if(s.length()<banana.length())
 		return {};
-
 
 	if(s.length()==banana.length())
 		if(s=="banana")
@@ -358,15 +350,17 @@ std::unordered_set<std::string> bananas(const std::string& s) {
 
 	std::unordered_set<std::string> result={};
 
+	// Cycle through all the possible positions to remove with size i
 	for(size_t i=1;i<s.length()-banana.length()+1;++i){
 
-	//Idea: keep one fixed and move the others
-
+	// Construct a helper array with the starting combination 0,1,2,...,i-1
 	std::vector<size_t> ptrs;
+
 	for(size_t j=0;j<i;++j)
 		ptrs.emplace_back(j);
 	
-		visit(s,result,ptrs,0);
+	// Call the recursive function and let it do its job
+	visit(s,result,ptrs,0);
 
 	}
 	
